@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pandas
+requests
+clickhouse-driver
+clickhouse-connect
+python-dotenv
+pytest
+httpx
+fastapi-cors

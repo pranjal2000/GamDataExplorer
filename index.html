@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Explorer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .form-group button {
+            cursor: pointer;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .results table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .results th, .results td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .results th {
+            background-color: #f2f2f2;
+        }
+        .dataset-id {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .loading {
+            display: none;
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Data Explorer</h1>
+        <div class="form-group">
+            <label for="csvUrl">CSV URL:</label>
+            <input type="text" id="csvUrl" placeholder="Enter CSV URL">
+        </div>
+        <div class="form-group">
+            <button onclick="uploadCsv()">Upload CSV</button>
+        </div>
+        <div class="form-group">
+            <label for="datasetId">Dataset ID:</label>
+            <input type="text" id="datasetId" placeholder="Enter dataset ID">
+        </div>
+        <div class="form-group">
+            <label for="filters">Filters (JSON format):</label>
+            <input type="text" id="filters" placeholder='Enter filters as JSON, e.g., {"AppID": "20200", "Name": "Gala"}'>
+        </div>
+        <div class="form-group">
+            <button onclick="exploreData()">Explore Data</button>
+        </div>
+        <div class="results" id="results"></div>
+        <div class="dataset-id" id="uploadedDatasetId"></div>
+        <div class="loading" id="loading">Uploading...</div>
+    </div>
+
+    <script>
+        const apiKey = 'your_api_key_1'; // Replace with your actual API key
+
+        async function uploadCsv() {
+            const csvUrl = document.getElementById('csvUrl').value;
+            const loadingDiv = document.getElementById('loading');
+            loadingDiv.style.display = 'block'; // Show loading message
+
+            const response = await fetch('http://localhost:8000/upload_csv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey
+                },
+                body: JSON.stringify({ csv_url: csvUrl })
+            });
+
+            loadingDiv.style.display = 'none'; // Hide loading message
+
+            const result = await response.json();
+            alert(`Upload Status: ${result.status}`);
+            displayUploadedDatasetId(result.dataset_id);
+        }
+
+        async function exploreData() {
+            const datasetId = document.getElementById('datasetId').value;
+            let filters = document.getElementById('filters').value;
+            if (!filters) {
+                filters = '{}';
+            }
+            const response = await fetch('http://localhost:8000/explore_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey
+                },
+                body: JSON.stringify({
+                    dataset_id: datasetId,
+                    filters: JSON.parse(filters)
+                })
+            });
+            const result = await response.json();
+            displayResults(result.results);
+        }
+
+        function displayUploadedDatasetId(datasetId) {
+            const uploadedDatasetIdDiv = document.getElementById('uploadedDatasetId');
+            uploadedDatasetIdDiv.innerHTML = `<p>Uploaded Dataset ID: ${datasetId}</p>`;
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            if (data.length === 0) {
+                resultsDiv.innerHTML = '<p>No results found.</p>';
+                return;
+            }
+
+            let table = '<table><tr>';
+            for (const key in data[0]) {
+                table += `<th>${key}</th>`;
+            }
+            table += '</tr>';
+
+            data.forEach(row => {
+                table += '<tr>';
+                for (const key in row) {
+                    table += `<td>${row[key]}</td>`;
+                }
+                table += '</tr>';
+            });
+            table += '</table>';
+
+            resultsDiv.innerHTML = table;
+        }
+    </script>
+</body>
+</html>
