@@ -80,7 +80,12 @@
     </div>
 
     <script>
-        const apiKey = 'your_api_key_1'; // Replace with your actual API key
+        let apiKey = ''; // Replace with your actual API key
+        async function fetchApiKey() {
+            const response = await fetch('https://data-explorer-eta.vercel.app/api/config');
+            const config = await response.json();
+            apiKey = config.api_keys[0]; // Use the first API key
+        }
 
         async function uploadCsv() {
             const csvUrl = document.getElementById('csvUrl').value;
@@ -153,6 +158,9 @@
 
             resultsDiv.innerHTML = table;
         }
+
+        // Fetch the API key when the page loads
+        window.onload = fetchApiKey;
     </script>
 </body>
 </html>

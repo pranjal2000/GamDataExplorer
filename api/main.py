@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.logger_config import setup_logging
-from api.routers import upload, explore
+from api.routers import upload, explore, config
 
 # Load environment variables from .env file
 load_dotenv()
@@ -28,3 +28,4 @@ app.mount("/static", StaticFiles(directory=".", html=True), name="static")
 
 app.include_router(upload.router, prefix="/api")
 app.include_router(explore.router, prefix="/api")
+app.include_router(config.router, prefix="/api")
