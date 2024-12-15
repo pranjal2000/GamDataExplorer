@@ -12,8 +12,17 @@ router = APIRouter()
 @router.post("/upload_csv", response_model=CSVUploadResponse, dependencies=[Depends(authenticate)])
 def upload_csv(request: CSVUploadRequest):
     """
-    Endpoint to upload a CSV file from a URL and store its data in ClickHouse.
-    """    
+        Upload a CSV file from a URL and store its data in ClickHouse.
+
+        Args:
+            request (CSVUploadRequest): The request body containing the CSV URL.
+
+        Returns:
+            CSVUploadResponse: The response containing the status and dataset ID.
+
+        Raises:
+            HTTPException: If there is an error reading the CSV or storing the data.
+    """   
     # Read CSV from URL
     df = read_csv_from_url(str(request.csv_url))
     
