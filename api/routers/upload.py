@@ -16,6 +16,10 @@ def upload_csv(request: CSVUploadRequest):
 
         Args:
             request (CSVUploadRequest): The request body containing the CSV URL.
+        
+        Headers:
+            x-api-key (str): The API key for authentication.
+            Content-Type (str): application/json
 
         Returns:
             CSVUploadResponse: The response containing the status and dataset ID.

@@ -19,11 +19,13 @@ def explore_data(
         request (DataQueryRequest): The request body containing dataset_id, filters, date_gt, and date_lt.
         page (int, optional): The page number for pagination. Defaults to 1. Must be greater than 0.
         page_size (int, optional): The number of results per page. Defaults to 25. Must be greater than 0 and less than or equal to 100.
+    Headers:
+        x-api-key (str): The API key for authentication.
+        Content-Type (str): application/json
     Returns:
         DataQueryResponse: The response containing the status, total results, paginated results, page number, and page size.
     Raises:
         HTTPException: If there is an error executing the query, a 500 status code is returned with the error details.
-
     """
     dataset_id = request.dataset_id
     filters = request.filters
