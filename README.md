@@ -49,8 +49,8 @@ App deployed here - https://data-explorer-eta.vercel.app/
 {
     "data": [
         {
-            "field1": "value1",
-            "field2": "value2",
+            "Name": "Galac",
+            "Release Date": "October 21, 2008",
             ...
         }
     ]
