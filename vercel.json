@@ -19,8 +19,20 @@
       "dest": "/api/main.py"
     },
     {
-      "src": "/(.*)",
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/view",
       "dest": "/index.html"
+    },
+    {
+      "src": "/docs",
+      "dest": "/api/main.py"
+    },
+    {
+      "src": "/docs/openapi.json",
+      "dest": "/api/main.py"
     }
   ]
 }
