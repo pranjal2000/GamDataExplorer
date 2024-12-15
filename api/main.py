@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from dotenv import load_dotenv
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.logger_config import setup_logging
@@ -16,11 +17,14 @@ app = FastAPI()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8001"],  # Allow your frontend origin
+    allow_origins=["*"],  # Allow your frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(upload.router)
-app.include_router(explore.router)
+# Serve static files
+app.mount("/static", StaticFiles(directory=".", html=True), name="static")
+
+app.include_router(upload.router, prefix="/api")
+app.include_router(explore.router, prefix="/api")

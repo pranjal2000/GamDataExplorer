@@ -87,7 +87,7 @@
             const loadingDiv = document.getElementById('loading');
             loadingDiv.style.display = 'block'; // Show loading message
 
-            const response = await fetch('http://localhost:8000/upload_csv', {
+            const response = await fetch('https://data-explorer-eta.vercel.app/api/upload_csv', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +109,7 @@
             if (!filters) {
                 filters = '{}';
             }
-            const response = await fetch('http://localhost:8000/explore_data', {
+            const response = await fetch('https://data-explorer-eta.vercel.app/api/explore_data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

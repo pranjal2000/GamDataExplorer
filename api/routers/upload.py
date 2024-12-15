@@ -27,7 +27,6 @@ def store_df_in_clickhouse(df: pd.DataFrame):
     
     client = get_clickhouse_client()
     
-    
     # Create table query with explicit schema
     create_table_query = f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
