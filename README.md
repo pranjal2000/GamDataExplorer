@@ -5,6 +5,7 @@
 GameDataExplorer is a FastAPI-based application that allows users to upload CSV files and explore the data stored in a ClickHouse database. The application provides endpoints to upload CSV files from a URL and query the data using various filters.
 
 App deployed here - https://data-explorer-eta.vercel.app/
+Swagger - https://data-explorer-eta.vercel.app/docs
 
 ## Features
 
