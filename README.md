@@ -15,9 +15,17 @@ App deployed here - https://data-explorer-eta.vercel.app/
 
 ### Upload CSV
 
-**Endpoint**: `/upload_csv`
+**Endpoint**: `https://data-explorer-eta.vercel.app/api/upload_csv`
 
 **Method**: `POST`
+
+**Request Headers**:
+```json
+{
+    "x-api-key": "<api_key>",
+    "Content-Type": "application/json",
+}
+```
 
 **Request Body**:
 ```json
@@ -36,24 +44,46 @@ App deployed here - https://data-explorer-eta.vercel.app/
 
 ### Explore Data
 
-**Endpoint**: `/explore`
+**Endpoint**: `https://data-explorer-eta.vercel.app/api/explore_data`
 
-**Method**: `GET`
+**Method**: `POST`
 
 **Query Parameters**:
-- `field`: The field to query.
-- `value`: The value to query.
+- `page`: page (int, optional)
+- `page_size`: page_size (int, optional).
+
+**Request Body**:
+```json
+{
+    "dataset_id": "string",
+    "filters": {"field1": "value1", "field2": "value2"}(optional),
+    "date_gt": "string"(optional),
+    "date_lt": "string"(optional),
+}
+```
+
+**Request Headers**:
+```json
+{
+    "x-api-key": "<api_key>",
+    "Content-Type": "application/json",
+}
+```
 
 **Response**:
 ```json
 {
-    "data": [
+    "status": "success",
+    "total_results" : int,
+    "results": [
         {
             "Name": "Galac",
             "Release Date": "October 21, 2008",
             ...
         }
-    ]
+    ],
+    "page": int,
+    "page_size": int
 }
 ```
 
@@ -69,7 +99,7 @@ App deployed here - https://data-explorer-eta.vercel.app/
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/GameDataExplorer.git
+    git clone https://github.com/<your-username>/GameDataExplorer.git
     cd GameDataExplorer
     ```
 
@@ -87,24 +117,19 @@ App deployed here - https://data-explorer-eta.vercel.app/
 4. Set up environment variables:
     - Create a `.env` file in the root directory and add the following environment variables:
         ```env
-        CLICKHOUSE_HOST=clickhouse
-        CLICKHOUSE_PORT=9000
-        CLICKHOUSE_USER=default
-        CLICKHOUSE_PASSWORD=
-        API_KEYS=your_api_key_1,your_api_key_2
+        CLICKHOUSE_HOST=<HOST>
+        CLICKHOUSE_PORT=<PORT>
+        CLICKHOUSE_USER=<USER>
+        CLICKHOUSE_PASSWORD=<PASSWORD>
+        API_KEYS=<api_key_1>,<api_key_2>
         ```
 
-5. Run the database initialization script:
-    ```sh
-    python db/init_db.py
-    ```
-
-6. Run the FastAPI application:
+5. Run the FastAPI application:
     ```sh
     uvicorn api.main:app --host 0.0.0.0 --port 8000
     ```
 
-7. Local Frontend Setup
+6. Local Frontend Setup
     - Serve the frontend using a simple HTTP server:
 
     - If you have Python installed, you can use the built-in HTTP server to serve the frontend.
